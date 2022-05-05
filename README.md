@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Taut Dokan (টাউট দোকান)
+
+An E-Commerce site built using [Material UI](https://mui.com/) and [Next.js](https://nextjs.org/).
+
+This project has been bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
