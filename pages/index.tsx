@@ -9,22 +9,20 @@ import ShopTopBar from "../components/ShopTopBar";
 
 const Home: NextPage = () => {
 	return (
-		<ThemeProvider theme={DarkTheme}>
-			<div className={styles.container}>
-				<Head>
-					<title>টাউট দোকান (Taut Dokan)</title>
-					<meta name="description" content="An E-Commerce site" />
-					<link rel="icon" href="/favicon.ico" />
-				</Head>
+		<div className={styles.container}>
+			<Head>
+				<title>টাউট দোকান (Taut Dokan)</title>
+				<meta name="description" content="An E-Commerce site" />
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
 
-				<CssBaseline />
-				<ThemeProvider theme={DarkTheme}>
-					<Container component="nav" fixed disableGutters maxWidth={false}>
-						<ShopTopBar />
-					</Container>
-				</ThemeProvider>
-			</div>
-		</ThemeProvider>
+			<CssBaseline />
+			<ThemeProvider theme={DarkTheme}>
+				<Container component="nav" fixed disableGutters maxWidth={false}>
+					<ShopTopBar />
+				</Container>
+			</ThemeProvider>
+		</div>
 	);
 };
 

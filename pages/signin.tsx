@@ -1,13 +1,11 @@
-import React, { FormEvent, Provider } from "react";
+import React, { FormEvent } from "react";
 
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { Google, GitHub } from "@mui/icons-material";
+import { Google, GitHub, Facebook, Key } from "@mui/icons-material";
 import { NextAuthOptions } from "next-auth";
 import { getProviders, getSession, signIn } from "next-auth/react";
 import { NextPageContext } from "next";
 import Head from "next/head";
-import { Box } from "@mui/system";
-import { TextField } from "@mui/material";
 
 export default function SignIn({ providers }: NextAuthOptions) {
 	const handleSignIn = (e: FormEvent, providerId: string) => {
@@ -29,31 +27,7 @@ export default function SignIn({ providers }: NextAuthOptions) {
 			>
 				Sign In to continue shopping
 			</Typography>
-			<Box
-				component="form"
-				sx={{
-					display: "flex",
-					flexDirection: "column",
-					gap: "0.5rem",
-					marginBottom: "1rem",
-				}}
-			>
-				<TextField required id="outlined-required" label="Username" />
-				<TextField
-					required
-					id="outlined-password-input"
-					label="Password"
-					type="password"
-					autoComplete="current-password"
-				/>
-				<Button onClick={(event) => handleSignIn(event, "credentials")}>
-					Sign In
-				</Button>
-			</Box>
-
-			<Divider variant="middle" flexItem>
-				<Typography variant="h6">or</Typography>
-			</Divider>
+			<Divider variant="middle" flexItem></Divider>
 			<br />
 			<Stack
 				direction="column"
@@ -63,7 +37,21 @@ export default function SignIn({ providers }: NextAuthOptions) {
 			>
 				{Object.values(providers).map((provider) => {
 					if (provider.id === "credentials") return <></>;
-					const icon = provider.id === "google" ? <Google /> : <GitHub />;
+					let icon: JSX.Element;
+					switch (provider.id) {
+						case "google":
+							icon = <Google />;
+							break;
+						case "github":
+							icon = <GitHub />;
+							break;
+						case "facebook":
+							icon = <Facebook />;
+							break;
+						default:
+							icon = <Key />;
+							break;
+					}
 					return (
 						<Button
 							startIcon={icon}

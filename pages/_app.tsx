@@ -1,12 +1,45 @@
-import "../styles/globals.css";
+import Head from "next/head";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+import "../styles/globals.css";
+
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import { ThemeProvider } from "@mui/material/styles";
+import DarkTheme from "../src/themes/darkTheme";
+import LightTheme from "../src/themes/lightTheme";
+import { CssBaseline } from "@mui/material";
+import createEmotionCache from "../src/createEmotionCache";
+import { Session } from "next-auth";
+
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps extends AppProps {
+	emotionCache?: EmotionCache;
+	session: Session;
+}
+
+function MyApp(props: MyAppProps) {
+	const {
+		Component,
+		emotionCache = clientSideEmotionCache,
+		pageProps,
+		session,
+	} = props;
 	return (
-		<SessionProvider session={session}>
-			<Component {...pageProps} />
-		</SessionProvider>
+		<CacheProvider value={emotionCache}>
+			<Head>
+				<meta name="viewport" content="initial-scale=1, width=device-width" />
+			</Head>
+
+			<ThemeProvider theme={DarkTheme}>
+				<SessionProvider session={session}>
+					<CssBaseline />
+					<Component {...pageProps} />
+				</SessionProvider>
+			</ThemeProvider>
+		</CacheProvider>
 	);
 }
 
