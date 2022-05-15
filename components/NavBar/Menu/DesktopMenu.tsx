@@ -1,35 +1,50 @@
-import React from "react";
-import { NavMenuInterface } from "./NavMenuInterface";
+import React, { useState } from "react";
+import { MenuProps } from "./MenuProps";
 
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ProfileMenu from "./ProfileMenu";
 
-interface DesktopNavMenuProps extends NavMenuInterface {
-	handleMenuClose: () => void;
-}
+interface DesktopNavMenuProps extends MenuProps {}
 
 const DesktopMenu = (props: DesktopNavMenuProps) => {
 	return (
 		<>
-			<Menu
-				anchorEl={props.anchorEl}
-				anchorOrigin={{
-					vertical: "top",
-					horizontal: "right",
-				}}
-				id={props.id}
-				keepMounted
-				transformOrigin={{
-					vertical: "top",
-					horizontal: "right",
-				}}
-				open={props.isMenuOpen}
-				onClose={props.handleMenuClose}
-			>
-				<MenuItem onClick={props.handleMenuClose}>Profile</MenuItem>
-				<MenuItem onClick={props.handleMenuClose}>My account</MenuItem>
-				<MenuItem onClick={props.handleSignOut}>Log Out</MenuItem>
-			</Menu>
+			<Box sx={{ display: { xs: "none", md: "flex" } }}>
+				<IconButton size="large" aria-label="shopping cart" color="inherit">
+					<Badge badgeContent={4} color="error">
+						<ShoppingCart />
+					</Badge>
+				</IconButton>
+				<IconButton
+					size="large"
+					aria-label="show new notifications"
+					color="inherit"
+				>
+					<Badge badgeContent={17} color="error">
+						<NotificationsIcon />
+					</Badge>
+				</IconButton>
+				<IconButton
+					size="large"
+					edge="end"
+					aria-label="account of current user"
+					aria-controls={props.id}
+					aria-haspopup="true"
+					onClick={props.handleProfileMenuOpen}
+					color="inherit"
+				>
+					<AccountCircle />
+				</IconButton>
+				<ProfileMenu
+					anchorEl={props.profileAnchorEl}
+					handleProfileMenuClose={props.handleProfileMenuClose}
+				/>
+			</Box>
 		</>
 	);
 };

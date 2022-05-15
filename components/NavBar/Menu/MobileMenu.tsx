@@ -1,70 +1,81 @@
 import React from "react";
-import { NavMenuInterface } from "./NavMenuInterface";
+import { MenuProps } from "./MenuProps";
 
+import Box from "@mui/material/Box";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Badge from "@mui/material/Badge";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import ProfileMenu from "./ProfileMenu";
 
-interface MobileNavMenuProps extends NavMenuInterface {
+interface MobileMenuProps extends MenuProps {
+	mobileMenuAnchorEl: HTMLElement | null;
+	handleMobileMenuOpen: (event: React.MouseEvent<HTMLElement>) => void;
 	handleMobileMenuClose: () => void;
-	handleProfileMenuOpen: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const MobileMenu = (props: MobileNavMenuProps) => {
+const MobileMenu = (props: MobileMenuProps) => {
+	const isMobileMenuOpen = Boolean(props.mobileMenuAnchorEl);
 	return (
 		<>
-			<Menu
-				anchorEl={props.anchorEl}
-				anchorOrigin={{
-					vertical: "top",
-					horizontal: "right",
-				}}
-				id={props.id}
-				keepMounted
-				transformOrigin={{
-					vertical: "top",
-					horizontal: "right",
-				}}
-				open={props.isMenuOpen}
-				onClose={props.handleMobileMenuClose}
-			>
-				<MenuItem>
-					<IconButton size="large" aria-label="show new mails" color="inherit">
-						<Badge badgeContent={4} color="error">
-							<MailIcon />
-						</Badge>
-					</IconButton>
-					<p>Messages</p>
-				</MenuItem>
-				<MenuItem>
-					<IconButton
-						size="large"
-						aria-label="show new notifications"
-						color="inherit"
-					>
-						<Badge badgeContent={17} color="error">
-							<NotificationsIcon />
-						</Badge>
-					</IconButton>
-					<p>Notifications</p>
-				</MenuItem>
-				<MenuItem onClick={props.handleProfileMenuOpen}>
-					<IconButton
-						size="large"
-						aria-label="account of current user"
-						aria-controls="primary-search-account-menu"
-						aria-haspopup="true"
-						color="inherit"
-					>
-						<AccountCircle />
-					</IconButton>
-					<p>Profile</p>
-				</MenuItem>
-			</Menu>
+			<Box sx={{ display: { xs: "flex", md: "none" } }}>
+				<IconButton
+					size="large"
+					aria-label="show more"
+					aria-controls={props.id}
+					aria-haspopup="true"
+					onClick={props.handleMobileMenuOpen}
+					color="inherit"
+				>
+					<MoreIcon />
+				</IconButton>
+				<Menu
+					anchorEl={props.mobileMenuAnchorEl}
+					open={isMobileMenuOpen}
+					onClose={props.handleMobileMenuClose}
+				>
+					<MenuItem>
+						<IconButton size="large" aria-label="show cart" color="inherit">
+							<Badge badgeContent={4} color="error">
+								<ShoppingCart />
+							</Badge>
+						</IconButton>
+						<p>Cart</p>
+					</MenuItem>
+					<MenuItem>
+						<IconButton
+							size="large"
+							aria-label="show notifications"
+							color="inherit"
+						>
+							<Badge badgeContent={17} color="error">
+								<NotificationsIcon />
+							</Badge>
+						</IconButton>
+						<p>Notifications</p>
+					</MenuItem>
+					<MenuItem onClick={props.handleProfileMenuOpen}>
+						<IconButton
+							size="large"
+							aria-label="account of current user"
+							aria-controls="primary-search-account-menu"
+							aria-haspopup="true"
+							color="inherit"
+						>
+							<AccountCircle />
+						</IconButton>
+						<p>Profile</p>
+					</MenuItem>
+					<ProfileMenu
+						anchorEl={props.profileAnchorEl}
+						handleProfileMenuClose={props.handleProfileMenuClose}
+					/>
+				</Menu>
+			</Box>
 		</>
 	);
 };

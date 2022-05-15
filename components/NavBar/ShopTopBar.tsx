@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useSession, signOut } from "next-auth/react";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -9,15 +9,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
 import DesktopMenu from "./Menu/DesktopMenu";
 import MobileMenu from "./Menu/MobileMenu";
@@ -63,110 +56,33 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-		React.useState<null | HTMLElement>(null);
-
-	const session = useSession();
-
-	const isMenuOpen = Boolean(anchorEl);
-	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+	const [profileAnchorEl, setProfileAnchorEl] = useState<HTMLElement | null>(
+		null
+	);
+	const [mobileMenuAnchorEl, setMobileMenuAnchorEl] =
+		useState<HTMLElement | null>(null);
 
 	const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
+		setProfileAnchorEl(event.currentTarget);
 	};
 
-	const handleMobileMenuClose = () => {
-		setMobileMoreAnchorEl(null);
-	};
-
-	const handleMenuClose = () => {
-		setAnchorEl(null);
+	const handleProfileMenuClose = () => {
+		setProfileAnchorEl(null);
 		handleMobileMenuClose();
 	};
 
 	const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-		setMobileMoreAnchorEl(event.currentTarget);
+		setMobileMenuAnchorEl(event.currentTarget);
 	};
 
-	const handleSignOut = () => {
-		signOut();
+	const handleMobileMenuClose = () => {
+		setMobileMenuAnchorEl(null);
 	};
+
+	const session = useSession();
 
 	const menuId = "primary-search-account-menu";
-	const renderMenu = (
-		<Menu
-			anchorEl={anchorEl}
-			anchorOrigin={{
-				vertical: "top",
-				horizontal: "right",
-			}}
-			id={menuId}
-			keepMounted
-			transformOrigin={{
-				vertical: "top",
-				horizontal: "right",
-			}}
-			open={isMenuOpen}
-			onClose={handleMenuClose}
-		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-			<MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
-		</Menu>
-	);
-
 	const mobileMenuId = "primary-search-account-menu-mobile";
-	const renderMobileMenu = (
-		<Menu
-			anchorEl={mobileMoreAnchorEl}
-			anchorOrigin={{
-				vertical: "top",
-				horizontal: "right",
-			}}
-			id={mobileMenuId}
-			keepMounted
-			transformOrigin={{
-				vertical: "top",
-				horizontal: "right",
-			}}
-			open={isMobileMenuOpen}
-			onClose={handleMobileMenuClose}
-		>
-			<MenuItem>
-				<IconButton size="large" aria-label="shopping cart" color="inherit">
-					<Badge badgeContent={4} color="error">
-						<ShoppingCart />
-					</Badge>
-				</IconButton>
-				<p>Messages</p>
-			</MenuItem>
-			<MenuItem>
-				<IconButton
-					size="large"
-					aria-label="show new notifications"
-					color="inherit"
-				>
-					<Badge badgeContent={17} color="error">
-						<NotificationsIcon />
-					</Badge>
-				</IconButton>
-				<p>Notifications</p>
-			</MenuItem>
-			<MenuItem onClick={handleProfileMenuOpen}>
-				<IconButton
-					size="large"
-					aria-label="account of current user"
-					aria-controls="primary-search-account-menu"
-					aria-haspopup="true"
-					color="inherit"
-				>
-					<AccountCircle />
-				</IconButton>
-				<p>Profile</p>
-			</MenuItem>
-		</Menu>
-	);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -202,72 +118,31 @@ export default function PrimarySearchAppBar() {
 
 					{session.status === "authenticated" ? (
 						<>
-							<Box sx={{ display: { xs: "none", md: "flex" } }}>
-								<IconButton
-									size="large"
-									aria-label="shopping cart"
-									color="inherit"
-								>
-									<Badge badgeContent={4} color="error">
-										<ShoppingCart />
-									</Badge>
-								</IconButton>
-								<IconButton
-									size="large"
-									aria-label="show new notifications"
-									color="inherit"
-								>
-									<Badge badgeContent={17} color="error">
-										<NotificationsIcon />
-									</Badge>
-								</IconButton>
-								<IconButton
-									size="large"
-									edge="end"
-									aria-label="account of current user"
-									aria-controls={menuId}
-									aria-haspopup="true"
-									onClick={handleProfileMenuOpen}
-									color="inherit"
-								>
-									<AccountCircle />
-								</IconButton>
-							</Box>
-
-							<Box sx={{ display: { xs: "flex", md: "none" } }}>
-								<IconButton
-									size="large"
-									aria-label="show more"
-									aria-controls={mobileMenuId}
-									aria-haspopup="true"
-									onClick={handleMobileMenuOpen}
-									color="inherit"
-								>
-									<MoreIcon />
-								</IconButton>
-							</Box>
 							<DesktopMenu
+								profileAnchorEl={profileAnchorEl}
 								id={menuId}
-								isMenuOpen={isMenuOpen}
-								anchorEl={anchorEl}
-								handleMenuClose={handleMenuClose}
-								handleSignOut={handleSignOut}
+								handleProfileMenuOpen={handleProfileMenuOpen}
+								handleProfileMenuClose={handleProfileMenuClose}
 							/>
 							<MobileMenu
+								profileAnchorEl={profileAnchorEl}
+								mobileMenuAnchorEl={mobileMenuAnchorEl}
 								id={mobileMenuId}
-								isMenuOpen={isMobileMenuOpen}
-								anchorEl={mobileMoreAnchorEl}
+								handleMobileMenuOpen={handleMobileMenuOpen}
 								handleMobileMenuClose={handleMobileMenuClose}
-								handleProfileMenuOpen={(e) => handleProfileMenuOpen(e)}
-								handleSignOut={handleSignOut}
+								handleProfileMenuOpen={handleProfileMenuOpen}
+								handleProfileMenuClose={handleProfileMenuClose}
 							/>
-
-							{/* {renderMobileMenu}
-							{renderMenu} */}
 						</>
 					) : (
 						<Link href="/api/auth/signin">
-							<Button>Sign In</Button>
+							<Button
+								sx={{
+									fontSize: { xs: "0.7em", md: "1em" },
+								}}
+							>
+								Sign In
+							</Button>
 						</Link>
 					)}
 				</Toolbar>

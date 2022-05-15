@@ -6,6 +6,7 @@ import { NextAuthOptions } from "next-auth";
 import { getProviders, getSession, signIn } from "next-auth/react";
 import { NextPageContext } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function SignIn({ providers }: NextAuthOptions) {
 	const handleSignIn = (e: FormEvent, providerId: string) => {
@@ -23,6 +24,8 @@ export default function SignIn({ providers }: NextAuthOptions) {
 				variant="h2"
 				sx={{
 					marginBottom: "0.5em",
+					textAlign: "center",
+					fontSize: { xs: "1.5em", md: "3em" },
 				}}
 			>
 				Sign In to continue shopping
@@ -69,6 +72,11 @@ export default function SignIn({ providers }: NextAuthOptions) {
 					);
 				})}
 			</Stack>
+			<div className="self-start justify-self-end mt-16 ml-4">
+				<Button>
+					<Link href="/">Return to home</Link>
+				</Button>
+			</div>
 		</div>
 	);
 }
