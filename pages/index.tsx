@@ -3,7 +3,6 @@ import Head from "next/head";
 
 import { CssBaseline, Grid } from "@mui/material";
 
-import ShopTopBar from "../components/NavBar/ShopTopBar";
 import ProductCard from "../components/ProductCard";
 import Prisma from "../utils/prismaClient";
 
@@ -14,12 +13,10 @@ export default function Home({
 		<>
 			<CssBaseline />
 			<Head>
-				<title>টাউট দোকান (Taut Dokan)</title>
+				<title>টাউট দোকান (Taut Dokan) | Home</title>
 				<meta name="description" content="An E-Commerce site" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-
-			<ShopTopBar />
 
 			<Grid
 				container

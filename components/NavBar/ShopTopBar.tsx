@@ -55,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-export default function PrimarySearchAppBar() {
+export default function ShopTopBar() {
 	const [profileAnchorEl, setProfileAnchorEl] = useState<HTMLElement | null>(
 		null
 	);

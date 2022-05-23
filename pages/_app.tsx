@@ -12,6 +12,8 @@ import { CssBaseline } from "@mui/material";
 import createEmotionCache from "../src/createEmotionCache";
 import { Session } from "next-auth";
 
+import ShopTopBar from "../components/NavBar/ShopTopBar";
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -36,6 +38,7 @@ function MyApp(props: MyAppProps) {
 			<ThemeProvider theme={DarkTheme}>
 				<SessionProvider session={session}>
 					<CssBaseline />
+					<ShopTopBar />
 					<Component {...pageProps} />
 				</SessionProvider>
 			</ThemeProvider>
