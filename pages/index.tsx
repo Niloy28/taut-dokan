@@ -1,10 +1,12 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
-import { CssBaseline, Grid } from "@mui/material";
+import { Container, CssBaseline, Grid } from "@mui/material";
 
 import ProductCard from "../components/ProductCard";
 import Prisma from "../utils/prismaClient";
+import HeroCarouselSection from "../components/HeroCarouselSection";
 
 export default function Home({
 	products,
@@ -18,32 +20,44 @@ export default function Home({
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<Grid
-				container
-				spacing={1}
-				sx={{
-					padding: 2,
-				}}
-			>
-				{Object.values(products).map((product) => {
-					return (
-						<ProductCard
-							key={product.id}
-							id={product.id}
-							name={product.name}
-							price={product.price.toString()}
-							inStock={product.inStock.toString()}
-							imgSrc={product.imgSrc}
-						/>
-					);
-				})}
-			</Grid>
+			<HeroCarouselSection />
+
+			<Container>
+				<Link href="/products/">
+					<a>Show More</a>
+				</Link>
+				<Grid
+					container
+					spacing={1}
+					sx={{
+						padding: 2,
+					}}
+				>
+					{Object.values(products).map((product) => {
+						return (
+							<ProductCard
+								key={product.id}
+								id={product.id}
+								name={product.name}
+								price={product.price.toString()}
+								inStock={product.inStock.toString()}
+								imgSrc={product.imgSrc}
+							/>
+						);
+					})}
+				</Grid>
+			</Container>
 		</>
 	);
 }
 
 export async function getServerSideProps() {
-	const products = await Prisma.product.findMany();
+	const products = await Prisma.product.findMany({
+		take: 4,
+		orderBy: {
+			name: "asc",
+		},
+	});
 	return {
 		props: {
 			products: products,

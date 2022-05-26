@@ -4,6 +4,11 @@ import { useSession } from "next-auth/react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +19,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import Link from "next/link";
 import DesktopMenu from "./Menu/DesktopMenu";
 import MobileMenu from "./Menu/MobileMenu";
+import { SwipeableDrawer } from "@mui/material";
+import { Home } from "@mui/icons-material";
+
+type Anchor = "top" | "left" | "bottom" | "right";
 
 const Search = styled("div")(({ theme }) => ({
 	position: "relative",
@@ -84,19 +93,78 @@ export default function ShopTopBar() {
 	const menuId = "primary-search-account-menu";
 	const mobileMenuId = "primary-search-account-menu-mobile";
 
+	const anchor: Anchor = "left";
+
+	const [state, setState] = React.useState({
+		top: false,
+		left: false,
+		bottom: false,
+		right: false,
+	});
+
+	const toggleDrawer =
+		(anchor: Anchor, open: boolean) =>
+		(event: React.KeyboardEvent | React.MouseEvent) => {
+			if (
+				event &&
+				event.type === "keydown" &&
+				((event as React.KeyboardEvent).key === "Tab" ||
+					(event as React.KeyboardEvent).key === "Shift")
+			) {
+				return;
+			}
+
+			setState({ ...state, [anchor]: open });
+		};
+
+	const list = (anchor: Anchor) => (
+		<Box
+			sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+			role="presentation"
+			onClick={toggleDrawer(anchor, false)}
+			onKeyDown={toggleDrawer(anchor, false)}
+		>
+			<List>
+				<ListItem disablePadding>
+					<ListItemButton>
+						<ListItemIcon>
+							<Home />
+							<Link href="/">
+								<p>Home</p>
+							</Link>
+						</ListItemIcon>
+						<ListItemText />
+					</ListItemButton>
+				</ListItem>
+			</List>
+		</Box>
+	);
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+			<AppBar position="fixed">
 				<Toolbar>
-					<IconButton
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="open drawer"
-						sx={{ mr: 2 }}
-					>
-						<MenuIcon />
-					</IconButton>
+					<React.Fragment key={anchor}>
+						<IconButton
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-label="open drawer"
+							sx={{ mr: 2 }}
+							onClick={toggleDrawer(anchor, true)}
+						>
+							<MenuIcon />
+						</IconButton>
+
+						<SwipeableDrawer
+							anchor={anchor}
+							open={state[anchor]}
+							onClose={toggleDrawer(anchor, false)}
+							onOpen={toggleDrawer(anchor, true)}
+						>
+							{list(anchor)}
+						</SwipeableDrawer>
+					</React.Fragment>
 					<Typography
 						variant="h6"
 						noWrap
