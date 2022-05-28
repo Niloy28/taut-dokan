@@ -10,6 +10,8 @@ export default function HeroCarouselSection() {
 			autoFocus
 			autoPlay
 			infiniteLoop
+			showThumbs={false}
+			showStatus={false}
 			className="py-14"
 		>
 			<div>
@@ -20,7 +22,6 @@ export default function HeroCarouselSection() {
 					width="100%"
 					height="50%"
 				/>
-				<p className="legend">Legend 1</p>
 			</div>
 			<div>
 				<Image
@@ -30,8 +31,6 @@ export default function HeroCarouselSection() {
 					width="100%"
 					height="50%"
 				/>
-
-				<p className="legend">Legend 2</p>
 			</div>
 			<div>
 				<Image
@@ -41,8 +40,6 @@ export default function HeroCarouselSection() {
 					width="100%"
 					height="50%"
 				/>
-
-				<p className="legend">Legend 3</p>
 			</div>
 		</Carousel>
 	);

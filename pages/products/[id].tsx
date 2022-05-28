@@ -1,48 +1,36 @@
 import React from "react";
 import Head from "next/head";
-import Prisma from "../../utils/prismaClient";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import prisma from "../../utils/prismaClient";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Image from "next/image";
+import { Container } from "@mui/material";
 
 export default function Product({
 	product,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	return (
 		<>
 			<Head>
-				<title>{product.name}</title>
+				<title>{product?.name}</title>
 			</Head>
-			<div>
+
+			<Container>
 				<Image
-					src={product.imgSrc}
+					src={product?.imgSrc as string}
 					width={500}
 					height={400}
-					alt={product.name}
+					alt={product?.name}
 				></Image>
-			</div>
+				<div>{product?.description}</div>
+			</Container>
 		</>
 	);
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-	const products = await Prisma.product.findMany();
-
-	const paths = products.map((product) => {
-		return {
-			params: { id: product.id },
-		};
-	});
-
-	return {
-		paths: paths,
-		fallback: false,
-	};
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const id = context.params?.id as string;
 
-	const product = await Prisma.product.findUnique({
+	const product = await prisma.product.findUnique({
 		where: {
 			id: id,
 		},
@@ -51,4 +39,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	return {
 		props: { product: product },
 	};
-};
+}

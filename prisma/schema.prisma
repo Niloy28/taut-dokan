@@ -24,6 +24,8 @@ model Review {
 model Product {
   id      String   @id @default(uuid())
   name    String
+  description String
+  category String
   imgSrc  String
   price   Float
   inStock Int

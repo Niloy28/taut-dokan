@@ -1,15 +1,15 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
-import { Container, CssBaseline, Grid } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
-import ProductCard from "../components/ProductCard";
-import Prisma from "../utils/prismaClient";
+import prisma from "../utils/prismaClient";
 import HeroCarouselSection from "../components/HeroCarouselSection";
+import ProductCategoryShowcase from "../components/Products/ProductCategoryShowcase";
 
 export default function Home({
 	products,
+	categories,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	return (
 		<>
@@ -22,45 +22,46 @@ export default function Home({
 
 			<HeroCarouselSection />
 
-			<Container>
-				<Link href="/products/">
-					<a>Show More</a>
-				</Link>
-				<Grid
-					container
-					spacing={1}
-					sx={{
-						padding: 2,
-					}}
-				>
-					{Object.values(products).map((product) => {
-						return (
-							<ProductCard
-								key={product.id}
-								id={product.id}
-								name={product.name}
-								price={product.price.toString()}
-								inStock={product.inStock.toString()}
-								imgSrc={product.imgSrc}
-							/>
-						);
-					})}
-				</Grid>
-			</Container>
+			{Object.values(categories).map((category) => {
+				const filteredProducts = products.filter(
+					(product) => product.category === category.category
+				);
+
+				return (
+					<ProductCategoryShowcase
+						key={category.category}
+						category={category.category}
+						products={filteredProducts}
+					/>
+				);
+			})}
 		</>
 	);
 }
 
 export async function getServerSideProps() {
-	const products = await Prisma.product.findMany({
-		take: 4,
+	const products = await prisma.product.findMany({
+		where: {
+			inStock: {
+				gt: 0,
+			},
+		},
 		orderBy: {
-			name: "asc",
+			price: "asc",
 		},
 	});
+
+	const categories = await prisma.product.findMany({
+		distinct: ["category"],
+		select: {
+			category: true,
+		},
+	});
+
 	return {
 		props: {
 			products: products,
+			categories: categories,
 		},
 	};
 }
