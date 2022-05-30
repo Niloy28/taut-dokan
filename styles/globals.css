@@ -18,3 +18,36 @@ a {
 * {
 	box-sizing: border-box;
 }
+
+ol {
+	list-style: decimal;
+}
+
+li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding: 10px;
+}
+
+h1 {
+	font-weight: 600;
+	font-size: 3em;
+	margin-bottom: 1.5em;
+}
+
+h2 {
+	font-weight: 500;
+	font-size: 2em;
+	margin-bottom: 0.5em;
+}
+
+h3 {
+	font-weight: 500;
+	font-size: 1.5em;
+	margin-bottom: 0.4em;
+}
+
+.container {
+	margin-top: 4em;
+	margin-bottom: 4em;
+}

@@ -15,10 +15,10 @@ export default function ProductCategoryShowcase({
 	products,
 }: ProductShowcaseProps) {
 	return (
-		<Container>
+		<Container className="container">
 			<div className="flex justify-between">
 				<h3>{capitalizeWord(category)}</h3>
-				<Link href="/">
+				<Link href={`/products/list/${category}`}>
 					<a>Show More</a>
 				</Link>
 			</div>

@@ -13,6 +13,7 @@ import createEmotionCache from "../src/createEmotionCache";
 import { Session } from "next-auth";
 
 import ShopTopBar from "../components/NavBar/ShopTopBar";
+import Footer from "../components/Footer";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -40,6 +41,7 @@ function MyApp(props: MyAppProps) {
 					<CssBaseline />
 					<ShopTopBar />
 					<Component {...pageProps} />
+					<Footer />
 				</SessionProvider>
 			</ThemeProvider>
 		</CacheProvider>

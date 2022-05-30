@@ -1,7 +1,7 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
-import { CssBaseline } from "@mui/material";
+import { Container, CssBaseline } from "@mui/material";
 
 import prisma from "../utils/prismaClient";
 import HeroCarouselSection from "../components/HeroCarouselSection";
@@ -23,9 +23,10 @@ export default function Home({
 			<HeroCarouselSection />
 
 			{Object.values(categories).map((category) => {
-				const filteredProducts = products.filter(
+				let filteredProducts = products.filter(
 					(product) => product.category === category.category
 				);
+				filteredProducts = filteredProducts.slice(0, 4);
 
 				return (
 					<ProductCategoryShowcase

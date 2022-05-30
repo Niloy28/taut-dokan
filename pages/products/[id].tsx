@@ -16,6 +16,7 @@ export default function Product({
 
 			<Container>
 				<Image
+					className="justify-center self-center"
 					src={product?.imgSrc as string}
 					width={500}
 					height={400}
