@@ -1,11 +1,12 @@
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
-import { Container, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
-import prisma from "../utils/prismaClient";
 import HeroCarouselSection from "../components/HeroCarouselSection";
 import ProductCategoryShowcase from "../components/Products/ProductCategoryShowcase";
+import contentfulClient from "../utils/contentfulClient";
+import { TypeProductFields } from "../libs";
 
 export default function Home({
 	products,
@@ -22,42 +23,38 @@ export default function Home({
 
 			<HeroCarouselSection />
 
-			{Object.values(categories).map((category) => {
-				let filteredProducts = products.filter(
-					(product) => product.category === category.category
+			{categories.items.map((category) => {
+				let filteredProducts = products.items.filter(
+					(product) => product.metadata.tags[0].sys.id === category.sys.id
 				);
 				filteredProducts = filteredProducts.slice(0, 4);
 
-				return (
-					<ProductCategoryShowcase
-						key={category.category}
-						category={category.category}
-						products={filteredProducts}
-					/>
-				);
+				if (filteredProducts.length === 0) {
+					return <></>;
+				} else {
+					return (
+						<ProductCategoryShowcase
+							key={category.name}
+							category={category.name}
+							products={filteredProducts}
+						/>
+					);
+				}
 			})}
 		</>
 	);
 }
 
 export async function getServerSideProps() {
-	const products = await prisma.product.findMany({
-		where: {
-			inStock: {
-				gt: 0,
-			},
-		},
-		orderBy: {
-			price: "asc",
-		},
-	});
+	const products =
+		await contentfulClient.withoutUnresolvableLinks.getEntries<TypeProductFields>(
+			{
+				"fields.inStock[gt]": 0,
+				content_type: "product",
+			}
+		);
 
-	const categories = await prisma.product.findMany({
-		distinct: ["category"],
-		select: {
-			category: true,
-		},
-	});
+	const categories = await contentfulClient.getTags();
 
 	return {
 		props: {

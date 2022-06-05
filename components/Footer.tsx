@@ -25,7 +25,7 @@ export default function Footer() {
 								marginBottom: "1em",
 							}}
 						>
-							<ul>
+							<ul className="list-none">
 								<li>
 									<Link href="/">
 										<a>Home</a>

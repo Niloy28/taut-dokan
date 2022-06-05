@@ -1,13 +1,13 @@
 import { Container, Grid } from "@mui/material";
-import { Product } from "@prisma/client";
 import Link from "next/link";
+import { TypeProduct, TypeProductFields } from "../../libs";
 import { capitalizeWord } from "../../utils/capitalizeWord";
 
 import ProductCard from "./ProductCard";
 
 interface ProductShowcaseProps {
 	category: string;
-	products: Product[];
+	products: TypeProduct[];
 }
 
 export default function ProductCategoryShowcase({
@@ -30,15 +30,17 @@ export default function ProductCategoryShowcase({
 					padding: 2,
 				}}
 			>
-				{Object.values(products).map((product) => {
+				{products.map((product) => {
 					return (
 						<ProductCard
-							key={product.id}
-							id={product.id}
-							name={product.name}
-							price={product.price.toString()}
-							inStock={product.inStock.toString()}
-							imgSrc={product.imgSrc}
+							key={product.fields.id}
+							id={product.fields.id}
+							name={product.fields.name as string}
+							price={product.fields.price?.toString() as string}
+							inStock={product.fields.inStock?.toString() as string}
+							imgSrc={`https:${(
+								product.fields.imgSrc?.fields.file?.url as string
+							).replace("https:", "")}`}
 						/>
 					);
 				})}
