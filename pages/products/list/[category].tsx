@@ -4,8 +4,9 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 import ProductCard from "../../../components/Products/ProductCard";
+import { TypeProductFields } from "../../../libs";
 import { capitalizeWord } from "../../../utils/capitalizeWord";
-import prisma from "../../../utils/prismaClient";
+import contentfulClient from "../../../utils/contentfulClient";
 
 export default function Category(
 	products: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -22,15 +23,17 @@ export default function Category(
 			<Container className="container" maxWidth={false}>
 				<h1>{capitalizeWord(category as string)}</h1>
 				<Grid container columns={13} gap={1}>
-					{Object.values(products.products).map((product) => {
+					{products.products.items.map((product) => {
 						return (
 							<ProductCard
-								key={product.id}
-								id={product.id}
-								name={product.name}
-								price={product.price.toString()}
-								inStock={product.inStock.toString()}
-								imgSrc={product.imgSrc}
+								key={product.fields.id}
+								id={product.fields.id}
+								name={product.fields.name as string}
+								price={product.fields.price?.toString() as string}
+								inStock={product.fields.inStock?.toString() as string}
+								imgSrc={`https:${(
+									product.fields.imgSrc?.fields.file?.url as string
+								).replace("https:", "")}`}
 							/>
 						);
 					})}
@@ -43,11 +46,9 @@ export default function Category(
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const category = context.params?.category as string;
 
-	console.log(category);
-	const products = await prisma.product.findMany({
-		where: {
-			category: category,
-		},
+	const products = await contentfulClient.getEntries<TypeProductFields>({
+		content_type: "product",
+		"metadata.tags.sys.id[in]": category,
 	});
 
 	return {
