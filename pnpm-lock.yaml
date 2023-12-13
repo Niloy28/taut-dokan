@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@contentful/rich-text-types':
+    specifier: ^16.3.0
+    version: 16.3.0
   '@emotion/cache':
     specifier: ^11.7.1
     version: 11.7.1
@@ -342,6 +345,11 @@ packages:
 
   /@contentful/rich-text-types@15.12.1:
     resolution: {integrity: sha512-WQJic0fnAbTa8xzO3Z+aVqDmA5+JMNQlATQMVJ40GoOrnM8YoJZsKGf6xX/O6Y6Eq10T1LrpxIOslODFI9qFgg==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
+  /@contentful/rich-text-types@16.3.0:
+    resolution: {integrity: sha512-OfQmAu5bxE0CgQA3WlUleVej+ifFG/iXmB2DmUl4EyWyFue1aiIvfjxQhcDRSH4n1jUNMJ6L1wInZL8uV5m3TQ==}
     engines: {node: '>=6.0.0'}
     dev: false
 
