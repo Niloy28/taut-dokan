@@ -34,7 +34,7 @@ export default function Home({
 				} else {
 					return (
 						<ProductCategoryShowcase
-							key={category.name}
+							key={category.sys.id}
 							category={category.name}
 							products={filteredProducts}
 						/>

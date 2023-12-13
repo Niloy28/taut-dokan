@@ -18,9 +18,7 @@ export default function ProductCategoryShowcase({
 		<Container className="container">
 			<div className="flex justify-between">
 				<h3>{capitalizeWord(category)}</h3>
-				<Link href={`/products/list/${category}`}>
-					<a>Show More</a>
-				</Link>
+				<Link href={`/products/list/${category}`}>Show More</Link>
 			</div>
 
 			<Grid

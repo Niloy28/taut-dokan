@@ -27,24 +27,16 @@ export default function Footer() {
 						>
 							<ul className="list-none">
 								<li>
-									<Link href="/">
-										<a>Home</a>
-									</Link>
+									<Link href="/">Home</Link>
 								</li>
 								<li>
-									<Link href="/privacy">
-										<a>Privacy Policy</a>
-									</Link>
+									<Link href="/privacy">Privacy Policy</Link>
 								</li>
 								<li>
-									<Link href="/shipping">
-										<a>Shipping and Returns</a>
-									</Link>
+									<Link href="/shipping">Shipping and Returns</Link>
 								</li>
 								<li>
-									<Link href="/refund">
-										<a>Refund Policy</a>
-									</Link>
+									<Link href="/refund">Refund Policy</Link>
 								</li>
 							</ul>
 						</Grid>

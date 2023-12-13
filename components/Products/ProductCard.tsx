@@ -28,21 +28,19 @@ export default function ProductCard(props: ProductProp) {
 	return (
 		<Grid item xs={6} md={3}>
 			<Link href={`/products/${props.id}`}>
-				<a>
-					<StyledCard>
-						<Image
-							src={props.imgSrc}
-							layout="responsive"
-							height={300}
-							width={400}
-							alt={`An image of ${props.name}`}
-						/>
-						<div className="flex justify-between mx-1">
-							<StyledTypography variant="h6">{props.name}</StyledTypography>
-							<StyledTypography variant="h6">{`$${props.price}`}</StyledTypography>
-						</div>
-					</StyledCard>
-				</a>
+				<StyledCard>
+					<Image
+						src={props.imgSrc}
+						layout="responsive"
+						height={300}
+						width={400}
+						alt={`An image of ${props.name}`}
+					/>
+					<div className="flex justify-between mx-1">
+						<StyledTypography variant="h6">{props.name}</StyledTypography>
+						<StyledTypography variant="h6">{`$${props.price}`}</StyledTypography>
+					</div>
+				</StyledCard>
 			</Link>
 		</Grid>
 	);
