@@ -36,7 +36,7 @@ export default function Product({
 							src={`https:${product.items[0].fields.imgSrc?.fields.file?.url}`}
 							width={500}
 							height={400}
-							alt={product?.items[0].fields.name}
+							alt={product?.items[0].fields.name!}
 						></Image>
 						<div className="text-right">{`Price: $${product.items[0].fields.price}`}</div>
 						<div className="text-right">{`Items Left: ${product.items[0].fields.inStock}`}</div>
